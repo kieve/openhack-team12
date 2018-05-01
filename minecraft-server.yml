@@ -1,0 +1,28 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: team12deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: team12minecraft
+    spec:
+      containers:
+      - name: minecraft-server
+        image: minecraft-server:1.0
+        ports:
+        - containerPort: 25565
+          name: minecraftserver
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: team12service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 25565
+  selector:
+    app: team12minecraft
