@@ -11,7 +11,10 @@ spec:
     spec:
       containers:
       - name: minecraft-server
-        image: challenge1.azurecr.io/minecraft-server:1.0
+        image: challenge1.azurecr.io/minecraft-server:2.0
+        volumeMounts:
+        - mountPath: "/data"
+          name: minecraftvolume
         env:
         - name: EULA
           value: "TRUE"
@@ -20,6 +23,10 @@ spec:
           name: minecraftserver
         - containerPort: 25575
           name: minecraftrcon
+      volumes:
+      - name: minecraftvolume
+        persistentVolumeClaim:
+          claimName: team12pvc
       imagePullSecrets:
         - name: supersecret
 ---
