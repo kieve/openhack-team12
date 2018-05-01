@@ -11,10 +11,17 @@ spec:
     spec:
       containers:
       - name: minecraft-server
-        image: minecraft-server:1.0
+        image: challenge1.azurecr.io/minecraft-server:1.0
+        env:
+        - name: EULA
+          value: "TRUE"
         ports:
         - containerPort: 25565
           name: minecraftserver
+        - containerPort: 25575
+          name: minecraftrcon
+      imagePullSecrets:
+        - name: supersecret
 ---
 apiVersion: v1
 kind: Service
@@ -23,6 +30,9 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-  - port: 25565
+  - name: server
+    port: 25565
+  - name: rcon 
+    port: 25575
   selector:
     app: team12minecraft
