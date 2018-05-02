@@ -4,7 +4,13 @@ import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
 
-import java.io.*;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonWriter;
+import javax.json.stream.JsonGenerator;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Rest {
 	private enum Endpoint {
@@ -27,7 +33,12 @@ public abstract class Rest {
 		}
 	}
 
-	public abstract String getJsonResponse(IHTTPSession session);
+	public static Map<String, Object> JSON_CONFIGS = new HashMap<>();
+	static {
+		JSON_CONFIGS.put(JsonGenerator.PRETTY_PRINTING, true);
+	}
+
+	public abstract JsonObject getJsonResponse(IHTTPSession session);
 
 	public static Response process(IHTTPSession session) {
 		String uri = session.getUri();
@@ -44,8 +55,12 @@ public abstract class Rest {
 		}
 
 		Rest processor = endpoint.getProcessor();
-		String jsonResult = processor.getJsonResponse(session);
+		JsonObject result = processor.getJsonResponse(session);
 
-		return NanoHTTPD.newFixedLengthResponse(jsonResult);
+		StringWriter stringWriter = new StringWriter();
+		JsonWriter jsonWriter = Json.createWriterFactory(JSON_CONFIGS).createWriter(stringWriter);
+		jsonWriter.write(result);
+
+		return NanoHTTPD.newFixedLengthResponse(stringWriter.toString());
 	}
 }
