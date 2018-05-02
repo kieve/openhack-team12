@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Azure.WebJobs.Host;
 
 namespace MinicraftLog
 {
@@ -33,7 +34,7 @@ namespace MinicraftLog
     public class LogStuff
     {
 
-        public static void Run(InputObject req)
+        public static void Run(InputObject req, TraceWriter log)
         {
 
             // Update customerId to your Operations Management Suite workspace ID
@@ -58,7 +59,7 @@ namespace MinicraftLog
             string hashedString = BuildSignature(stringToHash, sharedKey);
             string signature = "SharedKey " + customerId + ":" + hashedString;
 
-            PostData(signature, datestring, json, customerId, LogName);
+            PostData(signature, datestring, json, customerId, LogName, log);
         }
 
         // Build the API signature
@@ -75,7 +76,7 @@ namespace MinicraftLog
         }
 
         // Send a request to the POST API endpoint
-        public static void PostData(string signature, string date, string json, string customerId, string LogName)
+        public static void PostData(string signature, string date, string json, string customerId, string LogName, TraceWriter log)
         {
             // You can use an optional field to specify the timestamp from the data. If the time field is not specified, Log Analytics assumes the time is the message ingestion time
             string TimeStampField = "";
@@ -96,11 +97,11 @@ namespace MinicraftLog
 
                 System.Net.Http.HttpContent responseContent = response.Result.Content;
                 string result = responseContent.ReadAsStringAsync().Result;
-                Console.WriteLine("Return Result: " + result);
+                log.Error("Return Result: " + result);
             }
             catch (Exception excep)
             {
-                Console.WriteLine("API Post Exception: " + excep.Message);
+                log.Error("API Post Exception: " + excep.Message);
             }
         }
 

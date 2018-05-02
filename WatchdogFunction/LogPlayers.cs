@@ -36,7 +36,7 @@ namespace MinicraftLog
                     CurrentPlayers = minestat.CurrentPlayers,
                     ServerIsUp = minestat.ServerUp.ToString(),
                     ServerIp = ip
-                });
+                }, log);
             }
             catch
             {
