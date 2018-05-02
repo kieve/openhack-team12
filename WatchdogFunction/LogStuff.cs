@@ -15,8 +15,8 @@ namespace MinicraftLog
     {
         public String ServerIsUp { get; set; }
         //public String MaxNumberOfPlayers { get; set; }
-        public String Capacity { get; set; }
-        public String CurrentPlayers { get; set; }
+        public int Capacity { get; set; }
+        public int CurrentPlayers { get; set; }
         public string ServerIp { get; set; }
     }
 
@@ -24,8 +24,8 @@ namespace MinicraftLog
     public class InputJson
     {
         public string ServerIsUp { get; set; }
-        public string Capacity { get; set; }
-        public string CurrentPlayers { get; set; }
+        public int Capacity { get; set; }
+        public int CurrentPlayers { get; set; }
         public string ServerIp { get; set; }
     }
 
@@ -46,8 +46,8 @@ namespace MinicraftLog
             // Creates the JSON object, with key/value pairs
             InputJson jsonObj = new InputJson();
             jsonObj.ServerIsUp = req?.ServerIsUp;
-            jsonObj.Capacity = req?.Capacity;
-            jsonObj.CurrentPlayers = req?.CurrentPlayers;
+            jsonObj.Capacity = req.Capacity;
+            jsonObj.CurrentPlayers = req.CurrentPlayers;
             jsonObj.ServerIp = req?.ServerIp;
             // Convert object to json
             var json = JsonConvert.SerializeObject(jsonObj);
