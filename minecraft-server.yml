@@ -43,3 +43,49 @@ spec:
     port: 25575
   selector:
     app: team12minecraft
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: team12deployment2
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: team12minecraft2
+    spec:
+      containers:
+      - name: minecraft-server
+        image: challenge1.azurecr.io/minecraft-server:2.0
+        volumeMounts:
+        - mountPath: "/data"
+          name: minecraftvolume
+        env:
+        - name: EULA
+          value: "TRUE"
+        ports:
+        - containerPort: 25565
+          name: minecraftserver
+        - containerPort: 25575
+          name: minecraftrcon
+      volumes:
+      - name: minecraftvolume
+        persistentVolumeClaim:
+          claimName: team12pvc2
+      imagePullSecrets:
+        - name: supersecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: team12service2
+spec:
+  type: LoadBalancer
+  ports:
+  - name: server
+    port: 25565
+  - name: rcon
+    port: 25575
+  selector:
+    app: team12minecraft2

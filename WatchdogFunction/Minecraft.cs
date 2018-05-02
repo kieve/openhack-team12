@@ -25,9 +25,9 @@ namespace MinicraftLog
 
         public string Version { get; set; }
 
-        public string CurrentPlayers { get; set; }
+        public int CurrentPlayers { get; set; }
 
-        public string MaximumPlayers { get; set; }
+        public int MaximumPlayers { get; set; }
 
         public bool ServerUp { get; set; }
 
@@ -108,9 +108,21 @@ namespace MinicraftLog
 
                     Motd = serverData[3];
 
-                    CurrentPlayers = serverData[4];
+                    int curPlayers = 0;
+                    bool success = Int32.TryParse(serverData[4], out curPlayers);
+                    if (success) {
+                        CurrentPlayers = curPlayers;
+                    } else {
+                        CurrentPlayers = 0;
+                    }
 
-                    MaximumPlayers = serverData[5];
+                    int maxPlayers = 0;
+                    success = Int32.TryParse(serverData[5], out maxPlayers);
+                    if (success) {
+                        MaximumPlayers = maxPlayers;
+                    } else {
+                        MaximumPlayers = 0;
+                    }
 
                 }
 
