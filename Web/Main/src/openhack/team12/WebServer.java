@@ -4,6 +4,7 @@ import openhack.team12.pages.Page;
 import fi.iki.elonen.NanoHTTPD;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
+import openhack.team12.rest.Rest;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +13,8 @@ import java.io.InputStream;
 import java.util.Locale;
 
 public class WebServer extends NanoHTTPD {
+	public static final long START_TIME = System.currentTimeMillis();
+
 	private static final String WEB_CONTENT_DIR = "web-content";
 
 	private Configuration m_cfg;
@@ -34,7 +37,14 @@ public class WebServer extends NanoHTTPD {
 
 	@Override
 	public Response serve(IHTTPSession session) {
+		// Try and serve a page
 		Response response = Page.servePage(session, m_cfg);
+		if (response != null) {
+			return response;
+		}
+
+		// Try and serve a REST response
+		response = Rest.process(session);
 		if (response != null) {
 			return response;
 		}
