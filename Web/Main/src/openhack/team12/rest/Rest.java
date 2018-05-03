@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Rest {
-	private enum Endpoint {
+	protected enum Endpoint {
 		UPTIME("/rest/uptime", new Uptime()),
 		LIST_PODS("/rest/admin/list-pods", new ListPods()),
 		PERSISTENT_VOLUME_CLAIM("/rest/admin/pvc", new PersistentVolumeClaim());
@@ -48,7 +48,7 @@ public abstract class Rest {
 		Endpoint endpoint = null;
 
 		for (Endpoint endpointQuery : Endpoint.values()) {
-			if (endpointQuery.getPath().equals(uri)) {
+			if (uri.startsWith(endpointQuery.getPath())) {
 				endpoint = endpointQuery;
 				break;
 			}
