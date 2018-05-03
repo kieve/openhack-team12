@@ -103,7 +103,7 @@ spec:
     spec:
       containers:
       - name: webserver
-        image: challenge1.azurecr.io/team12web:0.1
+        image: challenge1.azurecr.io/team12web:0.2
         ports:
         - containerPort: 8080
           name: webalt
