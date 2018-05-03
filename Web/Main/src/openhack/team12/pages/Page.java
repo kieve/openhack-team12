@@ -18,7 +18,8 @@ import java.util.Map;
 public abstract class Page {
 	private enum Pages {
 		INDEX("/index.html", new Index()),
-		ERROR("/error.html", new openhack.team12.pages.Error());
+		ERROR("/error.html", new openhack.team12.pages.Error()),
+		ADMIN("/admin.html", new Admin());
 
 		private String m_path;
 		private Page   m_page;
@@ -38,7 +39,7 @@ public abstract class Page {
 	}
 
 	abstract String getTitle();
-	abstract void process(Map<String, Object> templateInput);
+	abstract void process(Map<String, Object> templateInput) throws Exception;
 
 	public static Response servePage(IHTTPSession session, Configuration cfg) {
 		String uri = session.getUri();
@@ -60,7 +61,12 @@ public abstract class Page {
 		Map<String, Object> templateInput = new HashMap<>();
 		templateInput.put("title", page.getPage().getTitle());
 
-		page.getPage().process(templateInput);
+		try {
+			page.getPage().process(templateInput);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 
 		Template template;
 		try {

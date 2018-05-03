@@ -1,6 +1,9 @@
 <#include "component/header.html">
 
-This is a test.<br>
-Template parameter: ${testParam}
+Server List! <br><br>
+
+<#list serverStrings as name, stuff>
+    ${stuff}
+</#list>
 
 <#include "component/footer.html">

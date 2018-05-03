@@ -17,7 +17,9 @@ public abstract class Rest {
 	protected enum Endpoint {
 		UPTIME("/rest/uptime", new Uptime()),
 		LIST_PODS("/rest/admin/list-pods", new ListPods()),
-		PERSISTENT_VOLUME_CLAIM("/rest/admin/pvc", new PersistentVolumeClaim());
+		PERSISTENT_VOLUME_CLAIM("/rest/admin/pvc", new PersistentVolumeClaim()),
+		MINECRAFT_SERVER_ADMIN("/rest/admin/minecraft", new MinecraftServer(true)),
+		MINECRAFT_SERVER("/rest/minecraft", new MinecraftServer(false));
 
 		private String m_path;
 		private Rest m_processor;

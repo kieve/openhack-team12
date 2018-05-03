@@ -1,0 +1,32 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: team12web
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: team12web
+    spec:
+      containers:
+      - name: webserver
+        image: challenge1.azurecr.io/team12web:0.3
+        ports:
+        - containerPort: 8080
+          name: webalt
+      imagePullSecrets:
+        - name: supersecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: team12webservice
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  selector:
+    app: team12web

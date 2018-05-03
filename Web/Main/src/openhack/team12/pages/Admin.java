@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class Index extends Page {
-	Index() {}
+class Admin extends Page {
+	Admin() {}
 
 	@Override
 	String getTitle() {
@@ -36,7 +36,9 @@ class Index extends Page {
                     "Server Name: " + ip.m_name
                             + " (" + ip.m_users + "/" + ip.m_capacity + ")" + "<br>"
                     + " Server = " + ip.m_serverAddress + "<br>"
-                    + " RCON = " + ip.m_rconAddress
+                    + " RCON = " + ip.m_rconAddress + "<br>"
+                    + " <a href='javascript:deleteServer(\"" + ip.m_name + "\");'>"
+                            + "Delete</a>"
                     + "<br><br>");
         }
 

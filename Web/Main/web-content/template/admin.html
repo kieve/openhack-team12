@@ -1,0 +1,16 @@
+<#include "component/header.html">
+
+This is an admin page.<br><br>
+
+<#list serverStrings as name, stuff>
+    ${stuff}
+</#list>
+
+<form id="createServerForm">
+    Create new Server with name:<br>
+  <input id="createServerName" type="text" name="servername"><br>
+</form>
+
+<a href="javascript:createServerButton();">Create</a>
+
+<#include "component/footer.html">
